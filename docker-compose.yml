@@ -19,5 +19,3 @@ services:
       POSTGRES_USER: limesurvey
       POSTGRES_PASSWORD: mylime
       POSTGRES_DB: limesurvey
-    volumes:
-      - ./data/:/var/lib/postgresql/data

@@ -98,7 +98,7 @@ class InstallFromConfigCommand extends CConsoleCommand
                 $this->connection->tablePrefix.'users',
                 array(
                     'users_name'=>$this->configuration['config']['defaultuser'],
-                    'password'=>$this->password_hash(configuration['config']['defaultpass'], PASSWORD_DEFAULT),
+                    'password'=>password_hash($this->configuration['config']['defaultpass'], PASSWORD_DEFAULT),
                     'full_name'=>"",
                     'parent_id'=>0,
                     'lang'=>'auto',

@@ -10,11 +10,14 @@ RUN mkdir /var/www/
 ADD ./limesurvey /var/www/limesurvey/
 RUN chown -R www-data:www-data /var/www/limesurvey
 VOLUME /var/www/limesurvey/upload/
+VOLUME /var/www/limesurvey/plugins
 
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD limesurvey.com.conf /etc/nginx/conf.d/www.conf
 
 WORKDIR /var/www/limesurvey/
+
+RUN mkdir -p tmp/runtime
 
 ADD config.php application/config/config.php
 
