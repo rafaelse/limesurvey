@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  limesurvey: 
+    image: rfs23/limesurvey
+    ports:
+      - "80:80"
+    volumes:
+      - ./upload:/var/www/limesurvey/upload
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres:10
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: limesurvey
+      POSTGRES_PASSWORD: mylime
+      POSTGRES_DB: limesurvey
+    volumes:
+      - ./data/:/var/lib/postgresql/data
