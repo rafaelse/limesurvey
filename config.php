@@ -24,10 +24,10 @@
 return array(
 	'components' => array(
 		'db' => array(
-			'connectionString' => 'pgsql:host=db;port=5432;user=limesurvey;password=mylime;dbname=limesurvey;',
+			'connectionString' => 'pgsql:host='.getenv('LIME_DBHOST').';port='.getenv('LIME_DBPORT').';user='.getenv('LIME_DBUSER').';password='.getenv('LIME_DBPASSWORD').';dbname='.getenv('LIME_DBNAME').';',
 			'emulatePrepare' => true,
-			'username' => 'limesurvey',
-			'password' => 'mylime',
+			'username' => getenv('LIME_DBUSER'),
+			'password' => getenv('LIME_DBPASSWORD'),
 			'charset' => 'utf8',
 			'tablePrefix' => 'lime_',
 		),
@@ -61,9 +61,9 @@ return array(
 		'debug'=>0,
 		'debugsql'=>0, // Set this to 1 to enanble sql logging, only active when debug = 2
 		// Update default LimeSurvey config here
-		'defaultuser'=>'admin',
-		'defaultpass'=>'admin',
-		'siteadminemail'=>'email@email.com'
+		'defaultuser'=>getenv('LIME_ADMINUSER'),
+		'defaultpass'=>getenv('LIME_ADMINPASSWORD'),
+		'siteadminemail'=>getenv('LIME_ADMINEMAIL')
 	)
 );
 /* End of file config.php */

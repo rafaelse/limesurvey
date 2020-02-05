@@ -7,9 +7,19 @@ services:
       - "80:80"
     volumes:
       - ./upload:/var/www/limesurvey/upload
+      - ./plugins:/var/www/limesurvey/plugins
     depends_on:
       - db
     restart: always
+    environment:
+      LIME_DBHOST: db
+      LIME_DBPORT: 5432
+      LIME_DBUSER: limesurvey
+      LIME_DBPASSWORD: mylime
+      LIME_DBNAME: limesurvey
+      LIME_ADMINNAME: admin
+      LIME_ADMINPASSWORD: admin
+      LIME_ADMINEMAIL: myemail@email.com
 
   db:
     image: postgres:10
@@ -19,3 +29,5 @@ services:
       POSTGRES_USER: limesurvey
       POSTGRES_PASSWORD: mylime
       POSTGRES_DB: limesurvey
+    volumes:
+      - ./data:/var/lib/postgresql/data

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Script created to run nginx along with PHP-FPM based on the example by Docker
+#Script created to run nginx along with PHP-FPM based on the example by Docker
+
+./set_env_variables.sh
 
 echo "Checking if installation is required"
 if [ -f "/var/www/limesurvey/application/config/config.php" ]; then
@@ -8,20 +10,20 @@ if [ -f "/var/www/limesurvey/application/config/config.php" ]; then
 	echo "config.php was provided: installation is required"
 
 	# Checks if the host is listening on port 5432
-	nc -zv db 5432 > /dev/null 2>&1
+	nc -zv $LIME_DBHOST $LIME_DBPORT
 	status=$?
 	echo "Checking if DB server is available"
 	while [ $status -ne 0 ]; do
 		echo "DB server not available yet"
 		sleep 2
-		nc -zv db 5432 > /dev/null 2>&1
+		nc -zv $LIME_DBHOST $LIME_DBPORT
 		status=$?
 	done
 	echo "DB server available"
 
 	echo "Waiting to install limesurvey"
 	sleep 5 # Wait for DBMS to be initialize the database
-	psql -h db -U limesurvey -c 'SELECT count(*) FROM lime_users' > /dev/null 2>&1
+	psql -h $LIME_DBHOST -U $LIME_DBUSER -c 'SELECT count(*) FROM lime_users'
 	status=$?
 	if [ $status -ne 0 ]; then
 		echo "Installing Limesurvey"
