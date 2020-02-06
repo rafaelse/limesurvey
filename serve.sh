@@ -25,8 +25,6 @@ if [ -f "/var/www/limesurvey/application/config/config.php" ]; then
 	chmod 600 .pgpass
 	export PGPASSFILE=.pgpass
 
-	echo "Waiting to install limesurvey"
-	sleep 5 # Wait for DBMS to be initialize the database
 	psql -h $LIME_DBHOST -U $LIME_DBUSER -c 'SELECT count(*) FROM lime_users'
 	status=$?
 	if [ $status -ne 0 ]; then
