@@ -8,6 +8,7 @@ services:
     volumes:
       - ./upload:/var/www/limesurvey/upload
       - ./plugins:/var/www/limesurvey/plugins
+      - ./config.php:/var/www/limesurvey/application/config/config.php
     depends_on:
       - db
     restart: always

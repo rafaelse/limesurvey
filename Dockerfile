@@ -9,8 +9,6 @@ RUN mkdir /var/www/
 
 ADD ./limesurvey /var/www/limesurvey/
 RUN chown -R www-data:www-data /var/www/limesurvey
-VOLUME /var/www/limesurvey/upload/
-VOLUME /var/www/limesurvey/plugins/
 
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD limesurvey.com.conf /etc/nginx/conf.d/www.conf
@@ -18,8 +16,6 @@ ADD www.conf /etc/php/7.3/fpm/pool.d/www.conf
 ADD php.ini /etc/php/7.3/fpm/php.ini
 
 WORKDIR /var/www/limesurvey/
-
-ADD config.php application/config/config.php
 
 ADD set_env_variables.sh .
 ADD serve.sh .
