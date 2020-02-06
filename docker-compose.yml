@@ -17,7 +17,7 @@ services:
       LIME_DBUSER: limesurvey
       LIME_DBPASSWORD: mylime
       LIME_DBNAME: limesurvey
-      LIME_ADMINNAME: admin
+      LIME_ADMINUSER: admin
       LIME_ADMINPASSWORD: admin
       LIME_ADMINEMAIL: myemail@email.com
 
