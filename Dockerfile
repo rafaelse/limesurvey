@@ -7,19 +7,19 @@ RUN apt-get -yqq install php7.3 php7.3-fpm php7.3-gd php7.3-imap php7.3-ldap php
 RUN mkdir /run/php/
 RUN mkdir /var/www/
 
-ADD ./limesurvey /var/www/limesurvey/
+ADD ./src /var/www/limesurvey/
 RUN chown -R www-data:www-data /var/www/limesurvey
 
-ADD nginx.conf /etc/nginx/nginx.conf
-ADD limesurvey.com.conf /etc/nginx/conf.d/www.conf
-ADD www.conf /etc/php/7.3/fpm/pool.d/www.conf
-ADD php.ini /etc/php/7.3/fpm/php.ini
+ADD ./conf/nginx/nginx.conf /etc/nginx/nginx.conf
+ADD ./conf/nginx/limesurvey.com.conf /etc/nginx/conf.d/www.conf
+ADD ./conf/fpm/www.conf /etc/php/7.3/fpm/pool.d/www.conf
+ADD ./conf/fpm/php.ini /etc/php/7.3/fpm/php.ini
 
 WORKDIR /var/www/limesurvey/
 
 ADD set_env_variables.sh .
 ADD serve.sh .
-RUN chmod +x serve.sh
-RUN chmod +x set_env_variables.sh
+RUN chmod u+x serve.sh
+RUN chmod u+x set_env_variables.sh
 
 ENTRYPOINT ["sh", "serve.sh"]

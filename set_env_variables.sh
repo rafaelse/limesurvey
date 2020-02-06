@@ -9,11 +9,12 @@ function setEnvironmentVariable() {
     fi
  
      # Add variable
-    echo "env[$1] = $2" >> /etc/php/7.3/fpm/pool.d/www.conf
+    echo "env[$1] = $2" >> /etc/php/7.3/fpm/pool.d/www.conf #TODO - Hardcoded config file, could be parameterized
 }
 
 echo "Setting environment variables"
-for _curVar in `env | grep LIME_ | awk -F = '{print $1}'`; do
+# Loop only through variables starting with LIME_
+for _curVar in `env | grep '^LIME_' | awk -F = '{print $1}'`; do
     # awk has split them by the equals sign
     # Pass the name and value to our function
     setEnvironmentVariable ${_curVar} ${!_curVar}

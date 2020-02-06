@@ -2,9 +2,11 @@
 
 #Script created to run nginx along with PHP-FPM based on the example by Docker
 
+# Uses external script to make enviroment variables available to PHP
 ./set_env_variables.sh
 
 echo "Checking if installation is required"
+# Starts installation process only if the config.php file is present at the specific location
 if [ -f "/var/www/limesurvey/application/config/config.php" ]; then
 
 	echo "config.php was provided: installation is required"
@@ -13,33 +15,47 @@ if [ -f "/var/www/limesurvey/application/config/config.php" ]; then
 	nc -zv $LIME_DBHOST $LIME_DBPORT
 	status=$?
 	echo "Checking if DB server is available"
+	
 	while [ $status -ne 0 ]; do
+		
 		echo "DB server not available yet"
+		
 		sleep 2
+		
 		nc -zv $LIME_DBHOST $LIME_DBPORT
 		status=$?
 	done
+	
 	echo "DB server available"
 
 	echo $LIME_DBHOST:$LIME_DBPORT:$LIME_DBNAME:$LIME_DBUSER:$LIME_DBPASSWORD > .pgpass
 	chmod 600 .pgpass
 	export PGPASSFILE=.pgpass
 
+	# Makes a query to the dabatase to find out if it's available and installed
 	psql -h $LIME_DBHOST -U $LIME_DBUSER -c 'SELECT count(*) FROM lime_users'
 	status=$?
+	
 	if [ $status -ne 0 ]; then
+		
 		echo "Installing Limesurvey"
+		# Installs LimesSurvey - creates database and insert basic data
 		php application/commands/console.php installfromconfig application/config/config.php
 		status=$?
+		
 		if [ $status -ne 0 ]; then
+			
 			echo "Failed to install Limesurvey: $status"
 			exit $status
 		fi
+		
 		echo "Limesurvey installed!"
 	else
+		
 		echo "Limesurvey is already installed"
 	fi
 else
+	
 	echo "config.php was not provided: installation is not required"
 fi
 
@@ -60,13 +76,16 @@ if [ $status -ne 0 ]; then
 fi
 
 while sleep 60; do
-  ps aux | grep nginx | grep -v grep
+  
+  ps aux | grep nginx | grep -v grep > /dev/null 2>&1
   NGINX_STATUS=$?
-  ps aux | grep php-fpm | grep -v grep
+  
+  ps aux | grep php-fpm | grep -v grep > /dev/null 2>&1
   PHPFPM_STATUS=$?
   # If the greps above find anything, they exit with 0 status
   # If they are not both 0, then something is wrong
   if [ $NGINX_STATUS -ne 0 -o $PHPFPM_STATUS -ne 0 ]; then
+    
     echo "One of the processes has already exited."
     exit 1
   fi
