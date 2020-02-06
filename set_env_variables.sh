@@ -16,6 +16,5 @@ echo "Setting environment variables"
 for _curVar in `env | grep LIME_ | awk -F = '{print $1}'`; do
     # awk has split them by the equals sign
     # Pass the name and value to our function
-    echo ${_curVar}
     setEnvironmentVariable ${_curVar} ${!_curVar}
 done
